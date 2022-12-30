@@ -1,13 +1,20 @@
 import Image from 'next/image';
 import { IBook } from '../interfaces/book';
 
-export default function ShowBooks({ books }: { books: IBook[] }) {
+interface IShoowBooks {
+  books: IBook[];
+  onClick?: (book: IBook, index: number) => void | Promise<void>;
+}
+
+export default function ShowBooks({ books, onClick }: IShoowBooks) {
+  const onClickBook = onClick ? onClick : () => {};
   if (!books) return <div>Loading...</div>;
   return (
     <div className="w-full h-auto flex flex-wrap justify-center items-start">
       {books.map((book, index) => (
         <div
           className="bg-gray-100 rounded-2xl w-full h-80 sm:w-60 xl:w-80 xl:h-[26rem] sm:m-5 mb-7 flex justify-start sm:flex-col"
+          onClick={() => onClickBook(book, index)}
           key={index}
         >
           <div className="relative w-44 min-w-[11rem] xl:min-w-[18rem] h-full flex justify-center items-center sm:items-end ml-7">

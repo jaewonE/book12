@@ -4,12 +4,7 @@ import { useEffect, useState } from 'react';
 import Loader from '../../components/loader';
 import SearchMain from '../../components/main-search';
 import ShowBooks from '../../components/show-books';
-import { IBook } from '../../interfaces/book';
-
-interface IAxiosRes {
-  status: number;
-  data: IBook[];
-}
+import { IAxiosBookListRes, IBook } from '../../interfaces/book';
 
 export default function SearchPage({ term }: { term?: string }) {
   const [rBooks, setRBooks] = useState<IBook[]>([]);
@@ -19,16 +14,19 @@ export default function SearchPage({ term }: { term?: string }) {
     setLoading(true);
     axios
       .get(`http://localhost:4000/books${term ? `?name_like=${term}` : ''}`)
-      .then(({ status, data }: IAxiosRes) => {
+      .then(({ status, data }: IAxiosBookListRes) => {
         if (status === 200 && data) setRBooks(data);
         setLoading(false);
       });
   }, [term]);
   const onSearch = async (term: string): Promise<void> => {
-    const { status, data }: IAxiosRes = await axios.get(
+    const { status, data }: IAxiosBookListRes = await axios.get(
       `http://localhost:4000/books${term ? `?name_like=${term}` : ''}`
     );
     if (status === 200 && data) setRBooks(data);
+  };
+  const onClickBook = (book: IBook) => {
+    router.push(`/detail/${book.id}`);
   };
   return (
     <div className="w-full">
@@ -42,7 +40,7 @@ export default function SearchPage({ term }: { term?: string }) {
       ) : (
         <>
           {rBooks.length ? (
-            <ShowBooks books={rBooks} />
+            <ShowBooks books={rBooks} onClick={onClickBook} />
           ) : (
             <div className="h-[60.5vh] w-full flex justify-center items-center font-medium text-3xl text-gray-800">
               No Results

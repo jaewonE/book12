@@ -7,7 +7,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className="w-screen h-screen">
       <Header />
-      <Component {...pageProps} />
+      <div className="w-full min-h-[86.5vh]">
+        <Component {...pageProps} />
+      </div>
       <Footer />
     </div>
   );

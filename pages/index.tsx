@@ -16,10 +16,13 @@ export default function Home() {
   const onSearch = (term: string): void => {
     if (term) router.push(`/search?term=${term}`);
   };
+  const onClickBook = (book: IBook) => {
+    router.push(`/detail/${book.id}`);
+  };
   return (
     <div className="w-full">
       <MainSearch onSearch={onSearch} />
-      <ShowBooks books={rBooks} />
+      <ShowBooks books={rBooks} onClick={onClickBook} />
     </div>
   );
 }

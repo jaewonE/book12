@@ -18,7 +18,7 @@ Simple book CRUD app using next.js version 12
 
 2 [ O ] searchResultPage - getServerSideProps
 
-3 [ㅤ ] detailPage - getStaticProps + getStaticPath
+3 [ O ] detailPage - getStaticProps + getStaticPath
 
 ##### UPDATE
 
