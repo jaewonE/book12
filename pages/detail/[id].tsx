@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { GetServerSidePropsContext, InferGetServerSidePropsType } from 'next';
+import { GetServerSidePropsContext } from 'next';
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { IAxiosBookRes, IBook } from '../../interfaces/book';
