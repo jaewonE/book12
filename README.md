@@ -6,37 +6,37 @@ Simple book CRUD app using next.js version 12
 
 ##### CREATE
 
-4 [ㅤ ] newBookPage - getStaticProps
+[ㅤ ] newBookPage - getStaticProps
 
-7 [ㅤ ] createUserPage - getStaticProps
+[ㅤ ] createUserPage - getStaticProps
 
-8 [ㅤ ] loginPage - getStaticProps
+[ㅤ ] loginPage - getStaticProps
 
 ##### READ
 
-1 [ O ] mainPage - getStaticProps
+[ O ] mainPage - getStaticProps
 
-2 [ O ] searchResultPage - getServerSideProps
+[ O ] searchResultPage - getServerSideProps
 
-3 [ O ] detailPage - getStaticProps + getStaticPath
+[ O ] detailPage - getStaticProps + getStaticPath
 
 ##### UPDATE
 
 Search how to update static props(ex:html, css)
 
-5 [ㅤ ] updateBookPage - getServerSideProps
+[ㅤ ] updateBookPage - getServerSideProps
 
-9 [ㅤ ] updateUserPage - getServerSideProps
+[ㅤ ] updateUserPage - getServerSideProps
 
 ##### DELETE
 
-6 [ㅤ ] deleteBook(in detailPage)
+[ㅤ ] deleteBook(in detailPage)
 
-10 [ㅤ ] deleteUser(in updateUserPage)
+[ㅤ ] deleteUser(in updateUserPage)
 
 ---
 
 #### DATABASE
 
-- First use json-server
-- Then use postgresql-prisma
+[ O ] First use json-server
+[ O ] Then use postgresql-prisma

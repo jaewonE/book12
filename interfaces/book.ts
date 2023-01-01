@@ -1,17 +1,23 @@
-export interface IBook {
-  id: string;
-  name: string;
-  category: string;
-  coverImg: string;
-  owner: string;
-}
+import { Book } from '@prisma/client';
+import { ICategory } from './category';
+import { IUser } from './user';
 
-export interface IAxiosBookRes {
-  status: number;
-  data: IBook;
-}
+export interface IBook extends Book {}
 
-export interface IAxiosBookListRes {
-  status: number;
-  data: IBook[];
-}
+export type IBookWithUser = Book & {
+  author: IUser;
+};
+
+export type IBookWithCategory = Book & {
+  category: ICategory;
+};
+
+export type IBookWithRelation = Book & {
+  category: ICategory;
+  author: IUser;
+};
+
+export type IBookWithRelationName = Book & {
+  author: Pick<IUser, 'name'>;
+  category: Pick<ICategory, 'name'>;
+};

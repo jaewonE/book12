@@ -36,7 +36,7 @@ export default function MainSearch({
       />
       <div className="w-3/5 h-14 relative">
         <input
-          className="w-full h-full rounded-xl border-2 border-gray-500 bg-gray-100 outline-none font-medium pl-6 pr-16 text-xl pb-1"
+          className="w-full h-full rounded-xl border-2 border-gray-500 bg-gray-100 focus:outline-none outline-none font-medium pl-6 pr-16 text-xl pb-1"
           type="text"
           value={term}
           onChange={(e) => onChange(e.target.value)}

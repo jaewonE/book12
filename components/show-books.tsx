@@ -1,9 +1,12 @@
 import Image from 'next/image';
-import { IBook } from '../interfaces/book';
+import { IBookWithRelationName } from '../interfaces/book';
 
 interface IShoowBooks {
-  books: IBook[];
-  onClick?: (book: IBook, index: number) => void | Promise<void>;
+  books: IBookWithRelationName[];
+  onClick?: (
+    book: IBookWithRelationName,
+    index: number
+  ) => void | Promise<void>;
 }
 
 export default function ShowBooks({ books, onClick }: IShoowBooks) {
@@ -20,18 +23,18 @@ export default function ShowBooks({ books, onClick }: IShoowBooks) {
           <div className="relative w-44 min-w-[11rem] xl:min-w-[18rem] h-full flex justify-center items-center sm:items-end ml-7">
             <Image
               className="relative rounded-lg shadow-xl"
-              src={book.coverImg}
-              alt={book.name}
+              src={book.coverImg || '/book.svg'}
+              alt={book.title}
               width={210}
               height={280}
             />
           </div>
           <div className="w-full h-full sm:h-24 pl-10 sm:pl-0 flex flex-col justify-center items-start sm:items-center">
             <span className="font-bold text-2xl sm:text-lg xl:text-xl pb-1 sm:pb-0 sm:pt-1">
-              {book.name}
+              {book.title}
             </span>
             <span className="text-base font-medium xl:font-bold text-gray-700 xl:text-gray-500">
-              {book.owner} | {book.category}
+              {book.author.name} | {book.category.name}
             </span>
           </div>
         </div>

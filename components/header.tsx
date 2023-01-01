@@ -11,9 +11,9 @@ export default function Header() {
     <Navbar fluid={true} rounded={true} className="mx-2">
       <Navbar.Brand onClick={() => movePage('/')}>
         <Image
-          src="./logo.svg"
+          src="/logo.svg"
           className="mr-3 h-6 sm:h-9 fill-blue-400"
-          alt="Flowbite Logo"
+          alt="logo"
           width={32}
           height={32}
         />
@@ -46,7 +46,7 @@ export default function Header() {
           <Dropdown.Divider />
           <Dropdown.Item>Sign out</Dropdown.Item>
         </Dropdown>
-        <Navbar.Toggle />
+        <Navbar.Toggle className="ml-2" />
       </div>
       <Navbar.Collapse>
         <Navbar.Link href="/navbars" active={true}>
