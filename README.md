@@ -30,13 +30,14 @@ Search how to update static props(ex:html, css)
 
 ##### DELETE
 
-[ㅤ ] deleteBook(in detailPage)
+[ㅤ ] deleteBook(in detailPage)1
 
-[ㅤ ] deleteUser(in updateUserPage)
+[ O ] deleteUser(in updateUserPage)
 
 ---
 
 #### DATABASE
 
 [ O ] First use json-server
+
 [ O ] Then use postgresql-prisma
