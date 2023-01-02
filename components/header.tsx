@@ -1,15 +1,17 @@
 import { Avatar, Dropdown, Navbar } from 'flowbite-react';
+import { DefaultSession } from 'next-auth';
+import { useSession, signOut } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import useWindowSize from '../lib/window-size';
 
 export default function Header() {
   const router = useRouter();
-  const movePage = (path: string) => {
-    router.push(path);
-  };
+  const { data: session, status } = useSession();
+  const { width } = useWindowSize();
   return (
     <Navbar fluid={true} rounded={true} className="mx-2">
-      <Navbar.Brand onClick={() => movePage('/')}>
+      <Navbar.Brand onClick={() => router.push('/')}>
         <Image
           src="/logo.svg"
           className="mr-3 h-6 sm:h-9 fill-blue-400"
@@ -21,57 +23,95 @@ export default function Header() {
           Book12
         </span>
       </Navbar.Brand>
-      <div className="flex md:order-2">
-        <Dropdown
-          arrowIcon={false}
-          inline={true}
-          label={
-            <Avatar
-              alt="User settings"
-              img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-              rounded={true}
-            />
-          }
-        >
-          <Dropdown.Header>
-            <span className="block text-sm pb-1">Bonnie Green</span>
-            <span className="block truncate text-sm font-semibold">
-              name@flowbite.com
-            </span>
-          </Dropdown.Header>
-          <Dropdown.Item onClick={() => movePage('dashboard')}>
-            Dashboard
-          </Dropdown.Item>
-          <Dropdown.Item>Settings</Dropdown.Item>
-          <Dropdown.Divider />
-          <Dropdown.Item>Sign out</Dropdown.Item>
-        </Dropdown>
-        <Navbar.Toggle className="ml-2" />
+      <div className="flex-grow md:flex-grow-0 flex md:order-2 justify-end items-center">
+        <Navbar.Toggle className="mr-3" />
+        {status === 'authenticated' && session.user ? (
+          <Dropdown
+            arrowIcon={false}
+            inline={true}
+            label={
+              <Avatar
+                alt="profile"
+                img={
+                  session.user.image ||
+                  'https://flowbite.com/docs/images/people/profile-picture-5.jpg'
+                }
+                rounded={true}
+              />
+            }
+          >
+            <Dropdown.Header>
+              <span className="block text-sm pb-1">
+                {session.user.name || ''}
+              </span>
+              <span className="block truncate text-sm font-semibold">
+                {session.user.email || ''}
+              </span>
+            </Dropdown.Header>
+            <Dropdown.Item onClick={() => router.push('dashboard')}>
+              Dashboard
+            </Dropdown.Item>
+            <Dropdown.Item>Settings</Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item onClick={() => signOut()}>Sign out</Dropdown.Item>
+          </Dropdown>
+        ) : (
+          <div className="md:flex md:order-2 hidden md:visible">
+            <button
+              onClick={() => router.push('signin')}
+              className="px-3 py-1 border rounded-md ml-3 bg-gray-50 font-medium"
+            >
+              Log In
+            </button>
+            <button
+              onClick={() => router.push('signup')}
+              className="px-3 py-1 border rounded-md ml-3 bg-yellow-300"
+            >
+              Sign In
+            </button>
+          </div>
+        )}
       </div>
       <Navbar.Collapse>
-        <Navbar.Link href="/navbars" active={true}>
+        <Navbar.Link
+          className="rounded-md hover:font-semibold hover:bg-blue-500 hover:text-white"
+          href="/navbars"
+        >
           Home
         </Navbar.Link>
-        <Navbar.Link href="/navbars">About</Navbar.Link>
-        <Navbar.Link href="/navbars">Services</Navbar.Link>
-        <Navbar.Link href="/navbars">Pricing</Navbar.Link>
-        <Navbar.Link href="/navbars">Contact</Navbar.Link>
+        <Navbar.Link
+          className="rounded-md hover:font-semibold hover:bg-blue-500 hover:text-white"
+          href="/navbars"
+        >
+          About
+        </Navbar.Link>
+        <Navbar.Link
+          className="rounded-md hover:font-semibold hover:bg-blue-500 hover:text-white"
+          href="/navbars"
+        >
+          Services
+        </Navbar.Link>
+        <Navbar.Link
+          className="rounded-md hover:font-semibold hover:bg-blue-500 hover:text-white"
+          href="/navbars"
+        >
+          Pricing
+        </Navbar.Link>
+        <Navbar.Link
+          className="rounded-md hover:font-semibold hover:bg-blue-500 hover:text-white"
+          href="/navbars"
+        >
+          Contact
+        </Navbar.Link>
+        {status === 'unauthenticated' && width && width <= 768 && (
+          <Navbar.Link
+            href="/signin"
+            className="bg-yellow-300 rounded-md font-semibold hover:bg-blue-500 hover:text-white"
+          >
+            Login
+          </Navbar.Link>
+        )}
       </Navbar.Collapse>
     </Navbar>
   );
 }
-// export default function Header() {
-//   return (
-//     <header className="w-full bg-white border-gray-200 px-2 sm:px-4 py-2.5 flex items-center justify-start">
-//       <Link
-//         href="/"
-//         className="md:w-40 md:min-w-[10rem] w-full h-auto flex justify-end items-center"
-//       >
-//         <span className="font-extrabold text-transparent text-[2rem] bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">
-//           Book 12
-//         </span>
-//       </Link>
-//       <Nav />
-//     </header>
-//   );
-// }
