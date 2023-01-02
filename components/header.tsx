@@ -48,10 +48,12 @@ export default function Header() {
                 {session.user.email || ''}
               </span>
             </Dropdown.Header>
+            <Dropdown.Item onClick={() => router.push('/profile')}>
+              Profile
+            </Dropdown.Item>
             <Dropdown.Item onClick={() => router.push('dashboard')}>
               Dashboard
             </Dropdown.Item>
-            <Dropdown.Item>Settings</Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item onClick={() => signOut()}>Sign out</Dropdown.Item>
           </Dropdown>
@@ -75,19 +77,19 @@ export default function Header() {
       <Navbar.Collapse>
         <Navbar.Link
           className="rounded-md hover:font-semibold hover:bg-blue-500 hover:text-white"
-          href="/navbars"
+          href="/"
         >
           Home
         </Navbar.Link>
         <Navbar.Link
           className="rounded-md hover:font-semibold hover:bg-blue-500 hover:text-white"
-          href="/navbars"
+          href="/search"
         >
-          About
+          Search
         </Navbar.Link>
         <Navbar.Link
           className="rounded-md hover:font-semibold hover:bg-blue-500 hover:text-white"
-          href="/navbars"
+          href="/search"
         >
           Services
         </Navbar.Link>

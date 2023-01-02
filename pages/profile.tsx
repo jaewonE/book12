@@ -1,57 +1,32 @@
-import axios, { AxiosError } from 'axios';
 import { useSession } from 'next-auth/react';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Loader from '../components/loader';
 import WrongPath, { IWrongPath } from '../components/wrong-path';
 
 const wrongPathProp: IWrongPath = {
-  maintitle: 'Already Sign up',
-  subtitle: 'You have already registered',
+  maintitle: 'Please Log in',
+  subtitle: 'You need to login to setup your profile',
   linkName: 'Go to main page',
+  linkHref: '/',
+  message: {
+    message: "Don't have an account? ",
+    linkName: 'Sign up',
+    linkHref: '/signup',
+  },
 };
 
-export default function SignUp() {
+export default function Profile() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [name, setName] = useState<string>('');
+  const [coverImg, setCoverImg] = useState<string>('');
   const { status } = useSession();
   const router = useRouter();
 
   const onSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    try {
-      const { data, status } = await axios.post(
-        'http://localhost:3000/api/auth/signup',
-        {
-          name,
-          email,
-          password,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      if (status === 201 && data) {
-        alert('Successfully created an account!\nPlease log in');
-        router.replace('/signin');
-        return;
-      }
-      throw new Error('');
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        const { error } = err.response?.data;
-        if (error) {
-          alert(error);
-          return;
-        }
-      }
-      alert('Cannot create user');
-      console.error(err);
-    }
+    console.log(email, password, name, coverImg);
   };
 
   if (status === 'loading') return <Loader />;
@@ -103,12 +78,6 @@ export default function SignUp() {
           type="submit"
           value="Sign up"
         />
-        <span className="w-full text-center mt-3 text-gray-600">
-          Already have an account?{' '}
-          <Link href="/signin" className="text-blue-600 font-medium">
-            Sign In
-          </Link>
-        </span>
       </form>
     </div>
   );

@@ -1,13 +1,19 @@
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
+import Loader from '../components/loader';
+import WrongPath, { IWrongPath } from '../components/wrong-path';
+
+const wrongPathProp: IWrongPath = {
+  maintitle: 'Already Log in',
+  subtitle: 'You are already logged in',
+  linkName: 'Go to main page',
+};
 
 export default function SignIn() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const { status } = useSession();
-  const router = useRouter();
 
   const onSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -32,15 +38,8 @@ export default function SignIn() {
     }
   };
 
-  if (status === 'authenticated') {
-    router.replace('/');
-    return (
-      <div className="w-full flex-grow bg-gray-100 text-2xl font-bold flex justify-center items-center">
-        Redirecting to home page
-      </div>
-    );
-  }
-
+  if (status === 'loading') return <Loader />;
+  if (status === 'authenticated') return <WrongPath props={wrongPathProp} />;
   return (
     <div className="w-full flex-grow flex justify-center items-center bg-gray-100">
       <form
