@@ -1,17 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { IUser } from '../../../interfaces/user';
-import { hashPassword, verifyPassword } from '../../../lib/auth';
+import { getSession } from 'next-auth/react';
+import { hashPassword } from '../../../lib/auth';
 import prisma from '../../../lib/prisma';
 
-export interface IProfileProps {
-  originEmail: string;
+interface IProfileProps {
   email?: string;
-  originPassword: string;
   password?: string;
   name?: string;
 }
 
-export interface IProfileRes {
+interface IProfileRes {
   status: boolean;
   error?: string;
 }
@@ -22,20 +20,16 @@ export default async function handler(
 ) {
   try {
     if (req.method !== 'POST') throw new Error('Method POST is vaild');
-    const {
-      originEmail,
-      email,
-      originPassword,
-      password,
-      name,
-    }: IProfileProps = req.body;
+    const { email, password, name }: IProfileProps = req.body;
     if (email || password || name) {
+      const session = await getSession({ req });
+      if (!session?.user?.email)
+        throw new Error('Failed to validate user. please log in again');
       const user = await prisma.user.findUnique({
-        where: { email: originEmail },
+        where: { email: session.user.email },
       });
-      if (!user) throw new Error('Failed to validate user');
-      if (user.password !== originPassword)
-        throw new Error('Failed to validate user');
+      if (!user)
+        throw new Error('Failed to validate user. please log in again');
 
       if (password && password !== '')
         user.password = await hashPassword(password);
@@ -49,7 +43,7 @@ export default async function handler(
       }
       await prisma.user.update({
         where: {
-          email: originEmail,
+          email: session.user.email,
         },
         data: { ...user },
       });
