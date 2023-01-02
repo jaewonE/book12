@@ -13,10 +13,10 @@ export default function ShowBooks({ books, onClick }: IShoowBooks) {
   const onClickBook = onClick ? onClick : () => {};
   if (!books) return <div>Loading...</div>;
   return (
-    <div className="w-full h-auto flex flex-wrap justify-center items-start">
+    <div className="w-full h-auto flex flex-wrap justify-center items-start mb-4">
       {books.map((book, index) => (
         <div
-          className="bg-gray-100 rounded-2xl w-full h-80 sm:w-60 xl:w-80 xl:h-[26rem] sm:m-5 mb-7 flex justify-start sm:flex-col"
+          className="bg-gray-100 rounded-2xl w-[90%] h-[22rem] sm:w-60 xl:w-80 xl:h-[26rem] sm:m-5 mb-7 flex justify-start sm:flex-col"
           onClick={() => onClickBook(book, index)}
           key={index}
         >
