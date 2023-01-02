@@ -13,12 +13,12 @@ export default function Header() {
       <Navbar.Brand onClick={() => router.push('/')}>
         <Image
           src="/logo.svg"
-          className="mr-3 h-6 sm:h-9 fill-blue-400"
           alt="logo"
-          width={32}
-          height={32}
+          className="w-[30px] h-[30px]"
+          width={30}
+          height={30}
         />
-        <span className="cursor-pointer self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
+        <span className="ml-3 cursor-pointer self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
           Book12
         </span>
       </Navbar.Brand>

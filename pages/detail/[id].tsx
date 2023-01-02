@@ -52,6 +52,7 @@ export default function DetailPage({ book }: IDetailPage) {
           className="relative rounded-xl shadow-xl md:max-w-[17rem] lg:max-w-none min-w-[200px]"
           src={book.coverImg ? book.coverImg : '/book.svg'}
           alt={book.title}
+          priority={true}
           width={book.coverImg ? 330 : 250}
           height={book.coverImg ? 550 : 330}
         />

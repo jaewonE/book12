@@ -29,6 +29,7 @@ export default function MainSearch({
       <Image
         width={1000}
         height={200}
+        priority={true}
         src="/main-search-bg.jpg"
         alt="Picture of the books"
         className="absolute top-0 left-0 w-full h-80 min-h-[20rem] object-cover -z-10 pointer-events-none"
