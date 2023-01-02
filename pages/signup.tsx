@@ -55,7 +55,10 @@ export default function SignUp() {
   };
 
   if (status === 'loading') return <Loader />;
-  if (status === 'authenticated') return <WrongPath props={wrongPathProp} />;
+  if (status === 'authenticated') {
+    router.replace('/');
+    return <WrongPath props={wrongPathProp} />;
+  }
   return (
     <div className="w-full flex-grow flex justify-center items-center bg-gray-100">
       <form

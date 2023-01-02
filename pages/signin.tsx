@@ -1,5 +1,6 @@
 import { signIn, useSession } from 'next-auth/react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Loader from '../components/loader';
 import WrongPath, { IWrongPath } from '../components/wrong-path';
@@ -13,6 +14,7 @@ const wrongPathProp: IWrongPath = {
 export default function SignIn() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const router = useRouter();
   const { status } = useSession();
 
   const onSubmit = async (e: React.SyntheticEvent) => {
@@ -39,7 +41,10 @@ export default function SignIn() {
   };
 
   if (status === 'loading') return <Loader />;
-  if (status === 'authenticated') return <WrongPath props={wrongPathProp} />;
+  if (status === 'authenticated') {
+    router.replace('/');
+    return <WrongPath props={wrongPathProp} />;
+  }
   return (
     <div className="w-full flex-grow flex justify-center items-center bg-gray-100">
       <form

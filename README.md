@@ -8,9 +8,9 @@ Simple book CRUD app using next.js version 12
 
 [ㅤ ] newBookPage - getStaticProps
 
-[ㅤ ] createUserPage - getStaticProps
+[ O ] createUserPage - getStaticProps
 
-[ㅤ ] loginPage - getStaticProps
+[ O ] loginPage - getStaticProps
 
 ##### READ
 
@@ -26,7 +26,7 @@ Search how to update static props(ex:html, css)
 
 [ㅤ ] updateBookPage - getServerSideProps
 
-[ㅤ ] updateUserPage - getServerSideProps
+[ O ] updateUserPage - getServerSideProps
 
 ##### DELETE
 

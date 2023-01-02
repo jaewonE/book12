@@ -1,5 +1,4 @@
 import { Avatar, Dropdown, Navbar } from 'flowbite-react';
-import { DefaultSession } from 'next-auth';
 import { useSession, signOut } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -19,7 +18,7 @@ export default function Header() {
           width={32}
           height={32}
         />
-        <span className="self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
+        <span className="cursor-pointer self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
           Book12
         </span>
       </Navbar.Brand>
