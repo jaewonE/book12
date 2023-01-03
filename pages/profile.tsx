@@ -5,21 +5,10 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Loader from '../components/loader';
-import WrongPath, { IWrongPath } from '../components/wrong-path';
+import WrongPath from '../components/wrong-path';
 import { IUser } from '../interfaces/user';
 import prisma from '../lib/prisma';
-
-const wrongPathProp: IWrongPath = {
-  maintitle: 'Please Log in',
-  subtitle: 'You need to login to setup your profile',
-  linkName: 'Go to main page',
-  linkHref: '/',
-  message: {
-    message: "Don't have an account? ",
-    linkName: 'Sign up',
-    linkHref: '/signup',
-  },
-};
+import { requireLogIn } from '../props/wrong-path';
 
 interface IProfilePageProps {
   user?: IUser;
@@ -55,7 +44,6 @@ export default function Profile({ user, error }: IProfilePageProps) {
   const [coverImg, setCoverImg] = useState<string>('');
   const [openPassword, setOpenPassword] = useState<boolean>(false);
   const [isDeleteMode, setIsDeleteMode] = useState<boolean>(false);
-  const { status } = useSession();
 
   const deleteUser = async () => {
     try {
@@ -122,13 +110,12 @@ export default function Profile({ user, error }: IProfilePageProps) {
     }
   };
 
-  if (status === 'loading') return <Loader />;
-  if (status === 'unauthenticated') return <WrongPath props={wrongPathProp} />;
   if (!user || error) {
     signOut();
     alert(error);
     console.error(error);
     router.replace('/');
+    return <WrongPath props={requireLogIn} />;
   }
   return (
     <div className="w-full flex-grow flex justify-center items-center bg-gray-100">

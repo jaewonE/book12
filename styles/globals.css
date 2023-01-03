@@ -125,4 +125,7 @@ table {
 
 @tailwind base;
 @tailwind components;
+.res-test {
+  @apply bg-red-100 sm:bg-orange-100 md:bg-yellow-50 lg:bg-green-100 xl:bg-blue-100 2xl:bg-purple-100;
+}
 @tailwind utilities;

@@ -3,13 +3,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import Loader from '../components/loader';
-import WrongPath, { IWrongPath } from '../components/wrong-path';
-
-const wrongPathProp: IWrongPath = {
-  maintitle: 'Already Log in',
-  subtitle: 'You are already logged in',
-  linkName: 'Go to main page',
-};
+import WrongPath from '../components/wrong-path';
+import { alreaySignIn } from '../props/wrong-path';
 
 export default function SignIn() {
   const [email, setEmail] = useState<string>('');
@@ -43,7 +38,7 @@ export default function SignIn() {
   if (status === 'loading') return <Loader />;
   if (status === 'authenticated') {
     router.replace('/');
-    return <WrongPath props={wrongPathProp} />;
+    return <WrongPath props={alreaySignIn} />;
   }
   return (
     <div className="w-full flex-grow flex justify-center items-center bg-gray-100">

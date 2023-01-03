@@ -3,6 +3,6 @@ import { IBook } from './book';
 
 export interface IUser extends User {}
 
-export type UserWithBooks = User & {
+export type IUserWithBooks = User & {
   books: IBook[];
 };

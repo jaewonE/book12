@@ -43,8 +43,8 @@ export default NextAuth({
       }
       return token;
     },
-    async session({ session }) {
-      return session;
+    async session({ session, token }) {
+      return { ...session, id: token?.sub };
     },
     async redirect({ url, baseUrl }) {
       if (url.startsWith('/')) {

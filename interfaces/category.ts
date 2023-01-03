@@ -3,6 +3,6 @@ import { IBook } from './book';
 
 export interface ICategory extends Category {}
 
-export type CategoryWithBooks = Category & {
+export type ICategoryWithBooks = Category & {
   books: IBook[];
 };
