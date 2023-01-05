@@ -86,7 +86,10 @@ export default function Dashboard({ books, error, session }: IDashboardProps) {
           </div>
         </div>
         <div className="my-3 md:pt-[6px] md:pb-0 px-7 w-full flex justify-end items-start">
-          <button className="px-2 py-1 md:px-3 rounded-md bg-green-500 text-white font-medium text-sm md:text-md md:font-semibold">
+          <button
+            onClick={() => router.push('/add-book')}
+            className="px-2 py-1 md:px-3 rounded-md bg-green-500 text-white font-medium text-sm md:text-md md:font-semibold"
+          >
             Add Book
           </button>
         </div>

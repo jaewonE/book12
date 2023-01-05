@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { IBookWithRelationName } from '../../../../interfaces/book';
-import prisma from '../../../../lib/prisma';
+import { IBookWithRelationName } from '../../../interfaces/book';
+import prisma from '../../../lib/prisma';
 
 export interface ISearchPageProps {
   term: string;

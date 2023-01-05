@@ -79,16 +79,8 @@ export default function Profile({ user, error }: IProfilePageProps) {
     try {
       const { data, status } = await axios.post(
         'http://localhost:3000/api/auth/update-profile',
-        {
-          name,
-          email,
-          password,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
+        { name, email, password },
+        { headers: { 'Content-Type': 'application/json' } }
       );
       if (status === 201 && data?.status) {
         alert('Successfully update profile! Please log in again to confirm.');
@@ -118,7 +110,7 @@ export default function Profile({ user, error }: IProfilePageProps) {
     return <WrongPath props={requireLogIn} />;
   }
   return (
-    <div className="w-full flex-grow flex justify-center items-center bg-gray-100">
+    <div className="w-full h-auto pt-20 pb-10 flex-grow flex justify-center items-center bg-gray-100">
       <div
         onSubmit={onSubmit}
         style={{ height: `${openPassword || isDeleteMode ? 38 : 31.5}rem` }}

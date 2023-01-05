@@ -9,14 +9,14 @@ generator client {
 }
 
 model Category {
-  id            Int   @id   @default(autoincrement())
+  id            Int   @id @unique   @default(autoincrement())
   name          String
   slug          String
   books         Book[]
 }
 
 model Book {
-  id            Int     @id  @default(autoincrement()) 
+  id            Int     @id @unique  @default(autoincrement()) 
   title         String
   description   String?
   coverImg      String?
@@ -24,14 +24,16 @@ model Book {
   authorId      String
   category      Category @relation(fields: [categoryId], references: [id])
   categoryId    Int
+
+  @@index([authorId, categoryId])
 }
 
 model User {
-  id            String   @id    @default(uuid())
+  id            String   @id @unique    @default(uuid())
   name          String
   email         String   @unique
   password      String  
   createAt     DateTime  @default(now())
   updateAt     DateTime  @updatedAt
-  books        Book[]
+  books        Book[]  
 }

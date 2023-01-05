@@ -6,7 +6,7 @@ Simple book CRUD app using next.js version 12
 
 ##### CREATE
 
-[ㅤ ] newBookPage - getStaticProps
+[ O ] newBookPage - getStaticProps
 
 [ O ] createUserPage - getStaticProps
 
