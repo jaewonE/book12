@@ -50,7 +50,7 @@ export default function Header() {
             <Dropdown.Item onClick={() => router.push('/profile')}>
               Profile
             </Dropdown.Item>
-            <Dropdown.Item onClick={() => router.push('dashboard')}>
+            <Dropdown.Item onClick={() => router.push('/dashboard')}>
               Dashboard
             </Dropdown.Item>
             <Dropdown.Divider />

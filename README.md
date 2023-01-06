@@ -24,13 +24,13 @@ Simple book CRUD app using next.js version 12
 
 Search how to update static props(ex:html, css)
 
-[ㅤ ] updateBookPage - getServerSideProps
+[ O ] updateBookPage - getServerSideProps
 
 [ O ] updateUserPage - getServerSideProps
 
 ##### DELETE
 
-[ㅤ ] deleteBook(in detailPage)1
+[ O ] deleteBook(in detailPage)1
 
 [ O ] deleteUser(in updateUserPage)
 

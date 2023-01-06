@@ -1,5 +1,7 @@
 import { GetStaticProps, GetStaticPropsContext } from 'next';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
+import Link from 'next/link';
 import Loader from '../../components/loader';
 import { IBookWithRelation } from '../../interfaces/book';
 import prisma from '../../lib/prisma';
@@ -44,10 +46,12 @@ export const getStaticProps: GetStaticProps<IDetailPage> = async (
 };
 
 export default function DetailPage({ book }: IDetailPage) {
+  const { data: session, status } = useSession();
+
   if (!book) return <Loader />;
   return (
     <div className="mt-16 w-full flex flex-col md:flex-row justify-start items-center">
-      <div className="w-1/2 relative flex justify-center items-center">
+      <div className="w-1/2 relative flex flex-col justify-center items-center">
         <Image
           className="relative rounded-xl shadow-xl md:max-w-[17rem] lg:max-w-none min-w-[200px]"
           src={book.coverImg ? book.coverImg : '/book.svg'}
@@ -56,6 +60,15 @@ export default function DetailPage({ book }: IDetailPage) {
           width={book.coverImg ? 330 : 250}
           height={book.coverImg ? 550 : 330}
         />
+        {status === 'authenticated' &&
+          session.user?.email === book.author.email && (
+            <Link
+              className="w-[17rem] py-1 bg-green-500 text-white rounded-lg text-center mt-3 font-semibold"
+              href={`/update-book/${book.id}`}
+            >
+              Update/Delete
+            </Link>
+          )}
       </div>
       <div className="mt-10 md:mb-16 px-12 md:pl-0 md:pr-5 w-full md:w-1/2 flex flex-col justify-start items-start border-2 border-t-2 border-gray-900">
         <span className="font-semibold text-3xl">{book.title}</span>
