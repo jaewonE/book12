@@ -7,6 +7,7 @@ interface IProfileProps {
   email?: string;
   password?: string;
   name?: string;
+  coverImg?: string;
 }
 
 interface IProfileRes {
@@ -20,8 +21,8 @@ export default async function handler(
 ) {
   try {
     if (req.method !== 'POST') throw new Error('Method POST is vaild');
-    const { email, password, name }: IProfileProps = req.body;
-    if (email || password || name) {
+    const { email, password, name, coverImg }: IProfileProps = req.body;
+    if (email || password || name || coverImg) {
       const session = await getSession({ req });
       if (!session?.user?.email)
         throw new Error('Failed to validate user. please log in again');
@@ -34,6 +35,7 @@ export default async function handler(
       if (password && password !== '')
         user.password = await hashPassword(password);
       if (name && name !== user.name) user.name = name;
+      if (coverImg && coverImg !== user.coverImg) user.coverImg = coverImg;
       if (email && email !== user.email) {
         const hasUser = await prisma.user.findUnique({
           where: { email },
@@ -42,9 +44,7 @@ export default async function handler(
         user.email = email;
       }
       await prisma.user.update({
-        where: {
-          email: session.user.email,
-        },
+        where: { email: session.user.email },
         data: { ...user },
       });
     }

@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { IBookWithRelationName } from '../interfaces/book';
+import BookSvg from './svg/book';
 
 interface IShoowBooks {
   books: IBookWithRelationName[];
@@ -21,7 +22,7 @@ export default function ShowBooks({
     <div className="w-full h-auto flex flex-wrap justify-center items-start mb-4">
       {books.map((book, index) => (
         <div
-          className={`bg-gray-100 h-[17rem] w-[100%] mb-4 px-3 flex justify-start ${
+          className={`bg-gray-100 h-[17rem] w-full mb-4 px-3 sm:px-0 flex justify-start ${
             forceListMode
               ? ''
               : 'sm:rounded-2xl sm:m-5 sm:py-3 sm:h-[22.5rem] sm:flex-col sm:w-[15.5rem] xl:w-[18rem] xl:h-[23rem]'
@@ -36,16 +37,20 @@ export default function ShowBooks({
                 : 'sm:ml-0 sm:w-full sm:items-end xl:min-w-[18rem]'
             }`}
           >
-            <Image
-              className="relative rounded-lg shadow-xl mt-2"
-              src={book.coverImg || '/book.svg'}
-              alt={book.title}
-              width={180}
-              height={220}
-            />
+            {book.coverImg ? (
+              <Image
+                className="relative rounded-lg shadow-xl mt-2"
+                src={book.coverImg}
+                alt={book.title}
+                width={180}
+                height={220}
+              />
+            ) : (
+              <BookSvg className="w-[170px] h-[200px] relative rounded-3xl shadow-xl mt-2 mb-6" />
+            )}
           </div>
           <div
-            className={`w-full h-full pl-5 flex flex-col justify-center items-start ${
+            className={`w-full h-full pl-10 sm:pl-0 flex flex-col justify-center items-start ${
               forceListMode ? '' : 'sm:items-center sm:h-24 sm:pl-0'
             }`}
           >

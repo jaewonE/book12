@@ -18,14 +18,10 @@ export default async function handler(
     const session = await getSession({ req });
     const email = session?.user?.email;
     if (!email) throw new Error('Failed to validate user. please log in again');
-    const user = await prisma.user.findUnique({
-      where: { email },
-    });
+    const user = await prisma.user.findUnique({ where: { email } });
     if (!user) throw new Error('Failed to validate user. please log in again');
 
-    const deleteUser = await prisma.user.delete({
-      where: { email },
-    });
+    const deleteUser = await prisma.user.delete({ where: { email } });
     if (deleteUser) {
       res.status(200).json({ status: true });
       return;

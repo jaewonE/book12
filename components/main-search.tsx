@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { useState } from 'react';
+import SearchSvg from './svg/search';
 
 interface IMainSearch {
   onSearch: (term: string) => void;
@@ -37,19 +38,15 @@ export default function MainSearch({
       />
       <div className="w-3/5 h-14 relative">
         <input
-          className="w-full h-full rounded-xl border-2 border-gray-500 bg-gray-100 focus:outline-none outline-none font-medium pl-6 pr-16 text-xl pb-1"
+          className="w-full h-full rounded-xl border-2 border-gray-500 bg-gray-100 focus:outline-none outline-none font-medium pl-6 pr-16 text-xl"
           type="text"
           value={term}
           onChange={(e) => onChange(e.target.value)}
           placeholder="Search the books!"
         />
-        <Image
-          onClick={onSubmit}
-          className=" absolute top-[14px] right-6 opacity-80"
-          src="/magnifying-glass-solid.svg"
-          alt="search"
-          width={26}
-          height={26}
+        <SearchSvg
+          fill="#000"
+          className="w-[26px] h-[26px] absolute top-[14px] right-6 opacity-80"
         />
       </div>
     </form>

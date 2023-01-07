@@ -8,6 +8,7 @@ import WrongPath from '../components/wrong-path';
 import { IBookWithRelationName } from '../interfaces/book';
 import prisma from '../lib/prisma';
 import { requireLogIn } from '../props/wrong-path';
+import ProfileSvg from '../components/svg/profile';
 
 interface IDashboardProps {
   session?: Session;
@@ -33,7 +34,7 @@ export const getServerSideProps: GetServerSideProps<IDashboardProps> = async (
     });
     if (!books) throw new Error('Unexpected error from dashboard');
     return {
-      props: { books, session },
+      props: JSON.parse(JSON.stringify({ books, session })),
     };
   } catch (e) {
     const error = String(e);
@@ -62,17 +63,21 @@ export default function Dashboard({ books, error, session }: IDashboardProps) {
       <div className="w-[28rem] sm:w-[90%] max-w-[85rem] min-h-[31rem] py-6 border-4 border-gray-700 shadow-2xl rounded-xl flex flex-col justify-start items-start bg-gray-50">
         <div className="w-full px-6 h-28 flex justify-between items-center border-b border-solid border-gray-200 overflow-y-hidden">
           <div className="h-full flex justify-start items-center pl-2">
-            <Image
-              src={
-                session.user.image ||
-                'https://flowbite.com/docs/images/people/profile-picture-5.jpg'
-              }
-              className="rounded-full border-2 border-gray-300 border-solid"
-              alt="profile"
-              width={85}
-              height={85}
-              priority={true}
-            />
+            {session.user.image ? (
+              <Image
+                src={session.user.image}
+                className="rounded-full border-2 border-gray-300 border-solid"
+                alt="profile"
+                width={85}
+                height={85}
+                priority={true}
+              />
+            ) : (
+              <ProfileSvg
+                fill="rgb(156 163 175)"
+                className="w-[85px] h-[85px] border-2 border-gray-300 border-solid p-1 pb-0 rounded-full"
+              />
+            )}
             <div className="w-36 pl-4 ml-2 pb-1 h-full flex flex-col justify-center items-start">
               <span className="text-sm font-semibold">{session.user.name}</span>
               <span className="text-sm text-gray-500 break-all mt-[1px]">

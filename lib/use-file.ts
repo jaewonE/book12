@@ -23,6 +23,8 @@ export default function useFile(): IUseFile {
         }
       };
       fileReader.readAsDataURL(file);
+    } else {
+      setFileDataURL(null);
     }
     return () => {
       isCancel = true;

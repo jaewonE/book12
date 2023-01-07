@@ -22,7 +22,7 @@ export const getServerSideProps: GetServerSideProps<{
     });
     if (books.length <= 0) throw new Error('No books');
     return {
-      props: { books },
+      props: { books: JSON.parse(JSON.stringify(books)) },
     };
   } catch (e: any) {}
   return {
@@ -40,9 +40,15 @@ export default function Home({ books }: { books: IBookWithRelationName[] }) {
     router.push(`/detail/${book.id}`);
   };
   return (
-    <div className="w-full">
+    <div className="w-full h-full flex flex-col flex-grow ">
       <MainSearch onSearch={onSearch} />
-      <ShowBooks books={rBooks} onClick={onClickBook} />
+      {books.length > 0 ? (
+        <ShowBooks books={rBooks} onClick={onClickBook} />
+      ) : (
+        <div className="w-full flex flex-grow justify-center items-center font-medium text-3xl text-gray-800">
+          No Results
+        </div>
+      )}
     </div>
   );
 }

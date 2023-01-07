@@ -1,13 +1,14 @@
 import axios, { AxiosError } from 'axios';
 import { GetServerSideProps, GetServerSidePropsContext } from 'next';
-import { getSession, signOut, useSession } from 'next-auth/react';
+import { getSession, signOut } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import Loader from '../components/loader';
+import { useEffect, useState } from 'react';
+import ProfileSvg from '../components/svg/profile';
 import WrongPath from '../components/wrong-path';
 import { IUser } from '../interfaces/user';
 import prisma from '../lib/prisma';
+import useFile, { IUseFile } from '../lib/use-file';
 import { requireLogIn } from '../props/wrong-path';
 
 interface IProfilePageProps {
@@ -37,6 +38,10 @@ export const getServerSideProps: GetServerSideProps<IProfilePageProps> = async (
 
 export default function Profile({ user, error }: IProfilePageProps) {
   const router = useRouter();
+  const { setFile, fileDataURL }: IUseFile = useFile();
+  const [showDefaultImage, setShowDefaultImage] = useState<boolean>(
+    user?.coverImg ? true : false
+  );
   const [email, setEmail] = useState<string>(user?.email || '');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
@@ -44,6 +49,20 @@ export default function Profile({ user, error }: IProfilePageProps) {
   const [coverImg, setCoverImg] = useState<string>('');
   const [openPassword, setOpenPassword] = useState<boolean>(false);
   const [isDeleteMode, setIsDeleteMode] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (fileDataURL) {
+      setShowDefaultImage(false);
+    }
+  }, [fileDataURL]);
+
+  const addImg = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files: FileList | null = e.target.files;
+    if (!files) return;
+    setFile(files[0]);
+    const formData = new FormData();
+    formData.append('file', files[0]);
+  };
 
   const deleteUser = async () => {
     try {
@@ -79,7 +98,7 @@ export default function Profile({ user, error }: IProfilePageProps) {
     try {
       const { data, status } = await axios.post(
         'http://localhost:3000/api/auth/update-profile',
-        { name, email, password },
+        { name, email, password, coverImg },
         { headers: { 'Content-Type': 'application/json' } }
       );
       if (status === 201 && data?.status) {
@@ -102,6 +121,11 @@ export default function Profile({ user, error }: IProfilePageProps) {
     }
   };
 
+  const deleteCoverImg = () => {
+    setCoverImg('');
+    setFile(null);
+  };
+
   if (!user || error) {
     signOut();
     alert(error);
@@ -113,7 +137,7 @@ export default function Profile({ user, error }: IProfilePageProps) {
     <div className="w-full h-auto pt-20 pb-10 flex-grow flex justify-center items-center bg-gray-100">
       <div
         onSubmit={onSubmit}
-        style={{ height: `${openPassword || isDeleteMode ? 38 : 31.5}rem` }}
+        style={{ height: `${openPassword && !isDeleteMode ? 45 : 38}rem` }}
         className="relative w-[28rem] px-14 border-4 border-gray-700 bg-white shadow-2xl rounded-xl rounded-tl-none"
       >
         <div className="absolute -top-11 left-0 w-[28rem] h-11 flex justify-start items-end">
@@ -140,14 +164,18 @@ export default function Profile({ user, error }: IProfilePageProps) {
               Are you sure you want to delete Your account?
             </h1>
             <div className="hover:scale-105 transition-all ease-in-out w-[15rem] h-[17rem] rounded-xl shadow-2xl border-4 border-gray-800 bg-gray-50 my-8 flex flex-col justify-start items-center">
-              <Image
-                src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                className="rounded-full mt-12"
-                alt="profile"
-                priority={true}
-                width={110}
-                height={110}
-              />
+              {user.coverImg ? (
+                <Image
+                  src={user.coverImg}
+                  className="rounded-full mt-12"
+                  alt="profile"
+                  priority={true}
+                  width={110}
+                  height={110}
+                />
+              ) : (
+                <ProfileSvg className="mt-10 w-32 h-32 border-2 border-solid p-1 pb-0 rounded-full" />
+              )}
               <div className="mt-5 font-semibold text-xl">{user?.name}</div>
               <div className="mt-2 text-gray-400">{user?.email}</div>
             </div>
@@ -175,6 +203,50 @@ export default function Profile({ user, error }: IProfilePageProps) {
             <h1 className="mt-12 mb-2 text-3xl font-semibold text-center w-full">
               Profile
             </h1>
+            <div className="h-[5rem] w-full mt-4 relative group p-2 flex justify-start items-center border-2 border-solid border-gray-300 hover:border-gray-500 transition ease-in-out rounded-2xl">
+              <input
+                type="file"
+                id="file-upload"
+                className="hidden pointer-events-none"
+                accept="image/jpg,impge/png,image/jpeg,image/gif"
+                name="profile"
+                onChange={(e) => addImg(e)}
+              />
+              <label htmlFor="file-upload" className="w-auto h-auto">
+                {fileDataURL || user.coverImg ? (
+                  <Image
+                    width={63}
+                    height={63}
+                    alt="profile"
+                    priority={true}
+                    src={fileDataURL || user.coverImg || ''}
+                    className="w-[63px] h-[63px] border border-gray-400 group-hover:border-gray-500 border-solid p-1 pb-0 rounded-full ml-4"
+                  />
+                ) : (
+                  <ProfileSvg
+                    fill="rgb(156 163 175)"
+                    className="w-[63px] h-[63px] border border-gray-400 group-hover:border-gray-500 border-solid p-1 pb-0 rounded-full ml-4"
+                  />
+                )}
+              </label>
+              <div className="flex-grow h-full flex justify-end items-center mr-4 cursor-default">
+                <label
+                  htmlFor="file-upload"
+                  className="w-20 h-[3rem] flex justify-center items-center group-hover:opacity-100 opacity-0 transition-all ease-in-out bg-green-300 border-2 border-solid border-green-500 font-medium rounded-md outline-none"
+                >
+                  Change
+                </label>
+                <span
+                  onClick={deleteCoverImg}
+                  className="w-20 h-[3rem] flex justify-center items-center group-hover:opacity-100 opacity-0 transition-all ease-in-out bg-red-300 border-2 border-solid border-red-500 font-medium rounded-md ml-4 outline-none"
+                >
+                  Delete
+                </span>
+              </div>
+              <span className="absolute top-6 right-9 font-semibold text-lg text-gray-700 group-hover:opacity-0 group-hover:-z-10 transition ease-out">
+                Upload Profile Image
+              </span>
+            </div>
             <label
               htmlFor="email"
               className="mt-5 w-full pl-1 pb-1 font-medium"

@@ -38,7 +38,10 @@ export const getServerSideProps: GetServerSideProps<ISearchPageProps> = async ({
         category: { select: { name: true } },
       },
     });
-    if (books.length > 0) return { props: { books, term, page: curPage } };
+    if (books.length > 0)
+      return {
+        props: JSON.parse(JSON.stringify({ books, term, page: curPage })),
+      };
   } catch (e) {}
   return {
     props: { books: [], term, page: curPage },

@@ -11,12 +11,15 @@ generator client {
 model Category {
   id            Int   @id @unique   @default(autoincrement())
   name          String
-  slug          String
+  slug          String @unique
   books         Book[]
 }
 
 model Book {
   id            Int     @id @unique  @default(autoincrement()) 
+  createAt     DateTime  @default(now())
+  updateAt     DateTime  @updatedAt
+  deleteAt     DateTime?
   title         String
   description   String?
   coverImg      String?
@@ -30,10 +33,12 @@ model Book {
 
 model User {
   id            String   @id @unique    @default(uuid())
+  createAt     DateTime  @default(now())
+  updateAt     DateTime  @updatedAt
+  deleteAt     DateTime?
   name          String
   email         String   @unique
   password      String  
-  createAt     DateTime  @default(now())
-  updateAt     DateTime  @updatedAt
+  coverImg      String?
   books        Book[]  
 }

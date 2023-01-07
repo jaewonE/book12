@@ -4,6 +4,7 @@ import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
+import BookSvg from '../components/svg/book';
 import { ICategory } from '../interfaces/category';
 import prisma from '../lib/prisma';
 import useFile, { IUseFile } from '../lib/use-file';
@@ -105,19 +106,23 @@ export default function AddBook({ categorys }: IAddBook) {
                 htmlFor="file-upload"
                 className="w-full h-full flex justify-center items-center"
               >
-                <Image
-                  priority={true}
-                  style={{ width: 'auto', height: 'auto' }}
-                  className={`w-auto rounded-xl ${
-                    fileDataURL
-                      ? 'max-w-[296px] max-h-[396px]'
-                      : 'max-w-[150px] max-h-[180px] opacity-40'
-                  }`}
-                  src={fileDataURL || './book.svg'}
-                  alt="preview"
-                  width={fileDataURL ? 296 : 150}
-                  height={fileDataURL ? 396 : 180}
-                />
+                {fileDataURL ? (
+                  <Image
+                    priority={true}
+                    style={{ width: 'auto', height: 'auto' }}
+                    className={`w-auto rounded-xl ${
+                      fileDataURL
+                        ? 'max-w-[296px] max-h-[396px]'
+                        : 'max-w-[150px] max-h-[180px] opacity-40'
+                    }`}
+                    src={fileDataURL}
+                    alt="preview"
+                    width={fileDataURL ? 296 : 150}
+                    height={fileDataURL ? 396 : 180}
+                  />
+                ) : (
+                  <BookSvg className="w-[170px] h-[200px] opacity-50 relative rounded-3xl shadow-xl mt-2 mb-6" />
+                )}
               </label>
             </div>
             <label

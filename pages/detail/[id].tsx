@@ -3,6 +3,7 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Loader from '../../components/loader';
+import BookSvg from '../../components/svg/book';
 import { IBookWithRelation } from '../../interfaces/book';
 import prisma from '../../lib/prisma';
 
@@ -52,18 +53,22 @@ export default function DetailPage({ book }: IDetailPage) {
   return (
     <div className="mt-16 w-full flex flex-col md:flex-row justify-start items-center">
       <div className="w-1/2 relative flex flex-col justify-center items-center">
-        <Image
-          className="relative rounded-xl shadow-xl md:max-w-[17rem] lg:max-w-none min-w-[200px]"
-          src={book.coverImg ? book.coverImg : '/book.svg'}
-          alt={book.title}
-          priority={true}
-          width={book.coverImg ? 330 : 250}
-          height={book.coverImg ? 550 : 330}
-        />
+        {book.coverImg ? (
+          <Image
+            className="relative rounded-xl shadow-xl md:max-w-[17rem] lg:max-w-none min-w-[200px]"
+            src={book.coverImg}
+            alt={book.title}
+            priority={true}
+            width={330}
+            height={550}
+          />
+        ) : (
+          <BookSvg className="w-[250px] h-[330px] relative rounded-3xl shadow-xl" />
+        )}
         {status === 'authenticated' &&
           session.user?.email === book.author.email && (
             <Link
-              className="w-[17rem] py-1 bg-green-500 text-white rounded-lg text-center mt-3 font-semibold"
+              className="w-[17rem] py-1 bg-green-500 text-white rounded-lg text-center mt-6 font-semibold"
               href={`/update-book/${book.id}`}
             >
               Update/Delete

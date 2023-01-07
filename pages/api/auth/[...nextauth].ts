@@ -24,8 +24,7 @@ export default NextAuth({
         if (!isValid) throw new Error('Wrong password');
         return {
           ...user,
-          image:
-            'https://flowbite.com/docs/images/people/profile-picture-5.jpg',
+          image: user.coverImg,
         };
       },
     }),

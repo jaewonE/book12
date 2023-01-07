@@ -5,6 +5,7 @@ import { getSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
+import BookSvg from '../../components/svg/book';
 import { IBookWithRelation } from '../../interfaces/book';
 import { ICategory } from '../../interfaces/category';
 import prisma from '../../lib/prisma';
@@ -166,7 +167,7 @@ export default function AddBook({ categorys, book }: IUpdateBook) {
         <div className="w-full h-full flex flex-col md:flex-row justify-start items-center md:items-start">
           <div className="min-h-[30rem] md:min-h-full md:h-full w-full md:w-1/2 flex flex-col justify-center items-center pr-4">
             <div
-              className={`w-[300px] h-[25rem] border-gray-300 mb-4 rounded-2xl ${
+              className={`w-[300px] h-[25rem] border-gray-300 mb-4 rounded-2xl group ${
                 fileDataURL || showDefaultImage
                   ? 'border-solid border-4'
                   : 'border-dashed border-[6px] hover:border-gray-400 transition-colors ease-in-out'
@@ -176,19 +177,19 @@ export default function AddBook({ categorys, book }: IUpdateBook) {
                 htmlFor="file-upload"
                 className="w-full h-full flex justify-center items-center"
               >
-                <Image
-                  priority={true}
-                  style={{ width: 'auto', height: 'auto' }}
-                  className={`w-auto rounded-xl ${
-                    fileDataURL || showDefaultImage
-                      ? 'max-w-[296px] max-h-[396px]'
-                      : 'max-w-[150px] max-h-[180px] opacity-40'
-                  }`}
-                  src={fileDataURL || book.coverImg || '/book.svg'}
-                  alt="preview"
-                  width={fileDataURL || showDefaultImage ? 296 : 150}
-                  height={fileDataURL || showDefaultImage ? 396 : 180}
-                />
+                {fileDataURL || book.coverImg ? (
+                  <Image
+                    priority={true}
+                    style={{ width: 'auto', height: 'auto' }}
+                    className="w-auto rounded-xl max-w-[296px] max-h-[396px]"
+                    src={fileDataURL || book.coverImg || ''}
+                    alt="preview"
+                    width={296}
+                    height={396}
+                  />
+                ) : (
+                  <BookSvg className="w-[150px] h-[180px] opacity-50 group-hover:opacity-70 relative rounded-3xl shadow-xl mt-2 mb-6" />
+                )}
               </label>
             </div>
             <label

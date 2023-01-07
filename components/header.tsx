@@ -1,8 +1,9 @@
 import { Avatar, Dropdown, Navbar } from 'flowbite-react';
 import { useSession, signOut } from 'next-auth/react';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import useWindowSize from '../lib/window-size';
+import LogoSvg from './svg/logo';
+import ProfileSvg from './svg/profile';
 
 export default function Header() {
   const router = useRouter();
@@ -11,13 +12,7 @@ export default function Header() {
   return (
     <Navbar fluid={true} rounded={true} className="mx-2">
       <Navbar.Brand onClick={() => router.push('/')}>
-        <Image
-          src="/logo.svg"
-          alt="logo"
-          className="w-[30px] h-[30px]"
-          width={30}
-          height={30}
-        />
+        <LogoSvg className="w-[30px] h-[30px]" />
         <span className="ml-3 cursor-pointer self-center whitespace-nowrap text-2xl font-semibold dark:text-white">
           Book12
         </span>
@@ -29,14 +24,14 @@ export default function Header() {
             arrowIcon={false}
             inline={true}
             label={
-              <Avatar
-                alt="profile"
-                img={
-                  session.user.image ||
-                  'https://flowbite.com/docs/images/people/profile-picture-5.jpg'
-                }
-                rounded={true}
-              />
+              session.user.image ? (
+                <Avatar alt="profile" img={session.user.image} rounded={true} />
+              ) : (
+                <ProfileSvg
+                  fill="rgb(156 163 175)"
+                  className="w-[41px] h-[41px] border border-gray-400 border-solid p-1 pb-0 rounded-full"
+                />
+              )
             }
           >
             <Dropdown.Header>
