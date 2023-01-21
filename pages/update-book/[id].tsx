@@ -276,16 +276,16 @@ export default function AddBook({ categorys, book }: IUpdateBook) {
               </label>
             </div>
             <div className="w-full h-auto rounded-md bg-blue-500 focus:bg-blue-600"></div>
-            <div className="w-full">
+            <div className="w-full flex justify-around items-start pt-8 gap-4">
               <input
                 required
-                className="w-48 h-10 mt-8 rounded-lg border-2 border-blue-500 bg-blue-500 text-white text-xl font-semibold"
+                className="md:w-48 w-[9.5rem] h-10 rounded-lg border-2 border-blue-500 bg-blue-500 text-white text-xl font-semibold"
                 type="submit"
                 value="Submit"
               />
               <input
                 required
-                className="w-48 h-10 mt-8 rounded-lg border-2 border-red-500 bg-red-500 text-white text-xl font-semibold ml-4"
+                className="md:w-48 w-[9.5rem] h-10 rounded-lg border-2 border-red-500 bg-red-500 text-white text-xl font-semibold"
                 type="button"
                 value="DELETE"
                 onClick={deleteBook}

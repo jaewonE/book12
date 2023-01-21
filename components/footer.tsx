@@ -8,22 +8,10 @@ export default function Footer() {
       </span>
       <ul className="flex flex-wrap items-center mt-2 text-sm text-gray-300">
         <li>
-          <Link href="/" className="mr-4 hover:underline md:mr-6 ">
-            About
-          </Link>
+          <div className="mr-4 md:mr-6">Licensing | MIT</div>
         </li>
         <li>
-          <Link href="/" className="mr-4 hover:underline md:mr-6">
-            Privacy Policy
-          </Link>
-        </li>
-        <li>
-          <Link href="/" className="mr-4 hover:underline md:mr-6">
-            Licensing
-          </Link>
-        </li>
-        <li>
-          <Link href="/" className="hover:underline">
+          <Link href="/contact" className="hover:underline">
             Contact
           </Link>
         </li>

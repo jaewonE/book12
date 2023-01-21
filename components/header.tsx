@@ -83,19 +83,13 @@ export default function Header() {
         </Navbar.Link>
         <Navbar.Link
           className="rounded-md hover:font-semibold hover:bg-blue-500 hover:text-white"
-          href="/search"
+          href="/dashboard"
         >
-          Services
+          DashBoard
         </Navbar.Link>
         <Navbar.Link
           className="rounded-md hover:font-semibold hover:bg-blue-500 hover:text-white"
-          href="/navbars"
-        >
-          Pricing
-        </Navbar.Link>
-        <Navbar.Link
-          className="rounded-md hover:font-semibold hover:bg-blue-500 hover:text-white"
-          href="/navbars"
+          href="/contact"
         >
           Contact
         </Navbar.Link>
