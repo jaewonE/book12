@@ -5,6 +5,7 @@ import { getSession } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
+import Loader from '../../components/loader';
 import BookSvg from '../../components/svg/book';
 import { IBookWithRelation } from '../../interfaces/book';
 import { ICategory } from '../../interfaces/category';
@@ -54,6 +55,7 @@ export default function AddBook({ categorys, book }: IUpdateBook) {
   const desRef = useRef<HTMLInputElement>(null);
   const { setFile, fileDataURL }: IUseFile = useFile();
   const [categoryList] = useState<ICategory[]>(categorys);
+  const [uploading, setUploading] = useState(false);
   const [showDefaultImage, setShowDefaultImage] = useState<boolean>(
     book.coverImg ? true : false
   );
@@ -90,10 +92,12 @@ export default function AddBook({ categorys, book }: IUpdateBook) {
   const deleteBook = async () => {
     if (confirm(`Are you sure to delete ${book.title}?`)) {
       try {
+        setUploading(true);
         const { data, status }: IAxiosNewBook = await axios.get(
           `http://localhost:3000/api/book/delete/${book.id}`
         );
         if (status === 200 && data?.status) {
+          setUploading(false);
           alert('Successfully deleted book');
           router.replace('/dashboard');
           return;
@@ -109,6 +113,7 @@ export default function AddBook({ categorys, book }: IUpdateBook) {
         }
         alert('Cannot delete book');
         console.error(err);
+        setUploading(false);
       }
     }
   };
@@ -125,18 +130,23 @@ export default function AddBook({ categorys, book }: IUpdateBook) {
       alert('category is required');
       return;
     }
-    if (title) book.title = title;
-    if (description) book.description = description;
-    if (selectedCategory) book.categoryId = selectedCategory.id;
-    const { category, author, ...updateProps } = book;
-
     try {
+      setUploading(true);
       const { data, status }: IAxiosNewBook = await axios.post(
         'http://localhost:3000/api/book/update',
-        updateProps,
+        {
+          title,
+          description,
+          coverImg: book.coverImg,
+          fileDataURL,
+          categoryId: selectedCategory?.id || null,
+          authorId: book.authorId,
+          bookId: book.id,
+        },
         { headers: { 'Content-Type': 'application/json' } }
       );
       if (status === 201 && data?.status) {
+        setUploading(false);
         alert('Successfully edit book');
         router.replace('/dashboard');
         return;
@@ -152,11 +162,12 @@ export default function AddBook({ categorys, book }: IUpdateBook) {
       }
       alert('Cannot edit book');
       console.error(err);
+      setUploading(false);
     }
   };
 
   return (
-    <div className="w-full py-10 flex-grow flex justify-center items-center bg-gray-100">
+    <div className="relative w-full py-10 flex-grow flex justify-center items-center bg-gray-100">
       <form
         onSubmit={onSubmit}
         className="w-[28rem] md:w-[95%] max-w-4xl h-[60rem] md:h-auto md:p-7 px-14 border-4 border-gray-700 bg-white shadow-2xl rounded-xl flex flex-col justify-start items-center md:items-start"
@@ -283,6 +294,11 @@ export default function AddBook({ categorys, book }: IUpdateBook) {
           </div>
         </div>
       </form>
+      {uploading && (
+        <div className="absolute top-0 left-0 w-full h-full z-20 bg-black bg-opacity-30 flex flex-col justify-center items-center">
+          <Loader />
+        </div>
+      )}
     </div>
   );
 }

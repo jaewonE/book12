@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ShowBooks from '../components/show-books';
 import MainSearch from '../components/main-search';
 import { useRouter } from 'next/router';

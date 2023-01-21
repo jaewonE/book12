@@ -23,9 +23,9 @@ model Book {
   title         String
   description   String?
   coverImg      String?
-  author        User    @relation(fields: [authorId], references: [id])
+  author        User    @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId      String
-  category      Category @relation(fields: [categoryId], references: [id])
+  category      Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId    Int
 
   @@index([authorId, categoryId])

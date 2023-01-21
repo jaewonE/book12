@@ -4,6 +4,7 @@ import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
+import Loader from '../components/loader';
 import BookSvg from '../components/svg/book';
 import { ICategory } from '../interfaces/category';
 import prisma from '../lib/prisma';
@@ -31,6 +32,7 @@ export default function AddBook({ categorys }: IAddBook) {
   const desRef = useRef<HTMLInputElement>(null);
   const { setFile, fileDataURL }: IUseFile = useFile();
   const [categoryList] = useState<ICategory[]>(categorys);
+  const [uploading, setUploading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(
     null
   );
@@ -60,18 +62,21 @@ export default function AddBook({ categorys }: IAddBook) {
       return;
     }
     try {
+      setUploading(true);
       const { data, status }: IAxiosNewBook = await axios.post(
         'http://localhost:3000/api/book/new',
-        { title, description, category: selectedCategory },
+        { title, description, category: selectedCategory, fileDataURL },
         { headers: { 'Content-Type': 'application/json' } }
       );
+      setUploading(false);
       if (status === 201 && data?.status) {
         alert('Successfully add book');
         router.replace('/dashboard');
         return;
       }
       throw new Error(data.error);
-    } catch (err) {
+    } catch (err: any) {
+      setUploading(false);
       if (err instanceof AxiosError) {
         const { error } = err.response?.data;
         if (error) {
@@ -153,7 +158,6 @@ export default function AddBook({ categorys }: IAddBook) {
             </label>
             <input
               ref={titleRef}
-              required
               id="title"
               className="w-full h-12 mb-2 rounded-md px-4 border shadow border-gray-400 focus:outline-none"
               type="text"
@@ -166,7 +170,6 @@ export default function AddBook({ categorys }: IAddBook) {
               Description
             </label>
             <input
-              required
               ref={desRef}
               id="description"
               className="w-full h-12 mb-2 rounded-md px-4 border shadow border-gray-400 focus:outline-none"
@@ -199,7 +202,6 @@ export default function AddBook({ categorys }: IAddBook) {
             </div>
             <div className="w-full h-auto rounded-md bg-blue-500 focus:bg-blue-600"></div>
             <input
-              required
               className="w-full h-12 mt-8 rounded-lg border-2 border-blue-500 bg-blue-500 text-white text-xl font-semibold"
               type="submit"
               value="Submit"
@@ -207,6 +209,11 @@ export default function AddBook({ categorys }: IAddBook) {
           </div>
         </div>
       </form>
+      {uploading && (
+        <div className="absolute top-0 left-0 w-full h-full z-20 bg-black bg-opacity-30 flex flex-col justify-center items-center">
+          <Loader />
+        </div>
+      )}
     </div>
   );
 }

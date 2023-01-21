@@ -25,7 +25,7 @@ export default function MainSearch({
   return (
     <form
       onSubmit={(e) => onSubmit(e)}
-      className="w-full h-80 relative mb-5 flex justify-center items-center"
+      className="w-full h-64 relative mb-5 flex justify-center items-center"
     >
       <Image
         width={1000}
@@ -33,7 +33,7 @@ export default function MainSearch({
         priority={true}
         src="/main-search-bg.jpg"
         alt="Picture of the books"
-        className="absolute top-0 left-0 w-full h-80 min-h-[20rem] object-cover -z-10 pointer-events-none"
+        className="absolute top-0 left-0 w-full h-64 min-h-[16rem] object-cover -z-10 pointer-events-none"
         sizes="100vw"
       />
       <div className="w-3/5 h-14 relative">

@@ -41,3 +41,5 @@ Search how to update static props(ex:html, css)
 [ O ] First use json-server
 
 [ O ] Then use postgresql-prisma
+
+[ O ] Upload images on firebase

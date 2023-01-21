@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
+import { deleteFileFB } from '../../../../lib/firebase';
 import prisma from '../../../../lib/prisma';
 
 interface IDeleteAccountRes {
@@ -26,6 +27,14 @@ export default async function handler(
     if (!hasBook) throw new Error('Book not found');
     if (hasBook.authorId !== userId)
       throw new Error('Access denied: not an onwer of the book');
+
+    if (hasBook.coverImg) {
+      const hasDeletedCoverImg = await deleteFileFB({
+        coverImg: hasBook.coverImg,
+      });
+      if (!hasDeletedCoverImg)
+        console.error(`Can noy delete file: ${hasBook.coverImg}`);
+    }
 
     const deleteBook = await prisma.book.delete({ where: { id } });
     if (deleteBook) {

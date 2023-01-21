@@ -4,6 +4,7 @@ import { getSession, signOut } from 'next-auth/react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import Loader from '../components/loader';
 import ProfileSvg from '../components/svg/profile';
 import WrongPath from '../components/wrong-path';
 import { IUser } from '../interfaces/user';
@@ -39,22 +40,16 @@ export const getServerSideProps: GetServerSideProps<IProfilePageProps> = async (
 export default function Profile({ user, error }: IProfilePageProps) {
   const router = useRouter();
   const { setFile, fileDataURL }: IUseFile = useFile();
-  const [showDefaultImage, setShowDefaultImage] = useState<boolean>(
-    user?.coverImg ? true : false
-  );
   const [email, setEmail] = useState<string>(user?.email || '');
   const [password, setPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [name, setName] = useState<string>(user?.name || '');
-  const [coverImg, setCoverImg] = useState<string>('');
+  const [coverImg, setCoverImg] = useState<string | null | undefined>(
+    user?.coverImg
+  );
+  const [uploading, setUploading] = useState(false);
   const [openPassword, setOpenPassword] = useState<boolean>(false);
   const [isDeleteMode, setIsDeleteMode] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (fileDataURL) {
-      setShowDefaultImage(false);
-    }
-  }, [fileDataURL]);
 
   const addImg = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files: FileList | null = e.target.files;
@@ -66,17 +61,20 @@ export default function Profile({ user, error }: IProfilePageProps) {
 
   const deleteUser = async () => {
     try {
+      setUploading(true);
       const { data, status } = await axios.get(
         'http://localhost:3000/api/auth/delete-account'
       );
       if (status === 200 && data?.status) {
         await signOut();
+        setUploading(false);
         alert(`Goodbye ${user?.name || ''}`);
         router.replace('/');
         return;
       }
       throw new Error('');
     } catch (err) {
+      setUploading(false);
       if (err instanceof AxiosError) {
         const { error } = err.response?.data;
         if (error) {
@@ -96,12 +94,14 @@ export default function Profile({ user, error }: IProfilePageProps) {
       return;
     }
     try {
+      setUploading(true);
       const { data, status } = await axios.post(
         'http://localhost:3000/api/auth/update-profile',
-        { name, email, password, coverImg },
+        { name, email, password, coverImg, fileDataURL },
         { headers: { 'Content-Type': 'application/json' } }
       );
       if (status === 201 && data?.status) {
+        setUploading(false);
         alert('Successfully update profile! Please log in again to confirm.');
         await signOut();
         router.replace('/');
@@ -109,6 +109,7 @@ export default function Profile({ user, error }: IProfilePageProps) {
       }
       throw new Error('');
     } catch (err) {
+      setUploading(false);
       if (err instanceof AxiosError) {
         const { error } = err.response?.data;
         if (error) {
@@ -122,7 +123,7 @@ export default function Profile({ user, error }: IProfilePageProps) {
   };
 
   const deleteCoverImg = () => {
-    setCoverImg('');
+    setCoverImg(null);
     setFile(null);
   };
 
@@ -134,7 +135,7 @@ export default function Profile({ user, error }: IProfilePageProps) {
     return <WrongPath props={requireLogIn} />;
   }
   return (
-    <div className="w-full h-auto pt-20 pb-10 flex-grow flex justify-center items-center bg-gray-100">
+    <div className="w-full pt-16 pb-5 flex-grow flex justify-center items-center bg-gray-100">
       <div
         onSubmit={onSubmit}
         style={{ height: `${openPassword && !isDeleteMode ? 45 : 38}rem` }}
@@ -164,10 +165,10 @@ export default function Profile({ user, error }: IProfilePageProps) {
               Are you sure you want to delete Your account?
             </h1>
             <div className="hover:scale-105 transition-all ease-in-out w-[15rem] h-[17rem] rounded-xl shadow-2xl border-4 border-gray-800 bg-gray-50 my-8 flex flex-col justify-start items-center">
-              {user.coverImg ? (
+              {coverImg ? (
                 <Image
-                  src={user.coverImg}
-                  className="rounded-full mt-12"
+                  src={coverImg}
+                  className="rounded-full mt-10 max-w-[110px] max-h-[110px] w-[110px] h-[110px] object-cover"
                   alt="profile"
                   priority={true}
                   width={110}
@@ -213,14 +214,14 @@ export default function Profile({ user, error }: IProfilePageProps) {
                 onChange={(e) => addImg(e)}
               />
               <label htmlFor="file-upload" className="w-auto h-auto">
-                {fileDataURL || user.coverImg ? (
+                {fileDataURL || coverImg ? (
                   <Image
                     width={63}
                     height={63}
                     alt="profile"
                     priority={true}
-                    src={fileDataURL || user.coverImg || ''}
-                    className="w-[63px] h-[63px] border border-gray-400 group-hover:border-gray-500 border-solid p-1 pb-0 rounded-full ml-4"
+                    src={fileDataURL || coverImg || ''}
+                    className="w-[65px] h-[65px] min-w-[65px] min-h-[65px] object-cover border border-gray-400 group-hover:border-gray-500 border-solid p-1 rounded-full ml-4"
                   />
                 ) : (
                   <ProfileSvg
@@ -234,7 +235,7 @@ export default function Profile({ user, error }: IProfilePageProps) {
                   htmlFor="file-upload"
                   className="w-20 h-[3rem] flex justify-center items-center group-hover:opacity-100 opacity-0 transition-all ease-in-out bg-green-300 border-2 border-solid border-green-500 font-medium rounded-md outline-none"
                 >
-                  Change
+                  {coverImg || fileDataURL ? 'Change' : 'Upload'}
                 </label>
                 <span
                   onClick={deleteCoverImg}
@@ -324,6 +325,11 @@ export default function Profile({ user, error }: IProfilePageProps) {
           </form>
         )}
       </div>
+      {uploading && (
+        <div className="absolute top-0 left-0 w-full h-full z-20 bg-black bg-opacity-30 flex flex-col justify-center items-center">
+          <Loader />
+        </div>
+      )}
     </div>
   );
 }
