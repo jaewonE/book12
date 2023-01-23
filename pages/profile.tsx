@@ -63,7 +63,7 @@ export default function Profile({ user, error }: IProfilePageProps) {
     try {
       setUploading(true);
       const { data, status } = await axios.get(
-        'https://book12-lemon.vercel.app/api/auth/delete-account'
+        'https://book12-lyart.vercel.app/api/auth/delete-account'
       );
       if (status === 200 && data?.status) {
         await signOut();
@@ -96,7 +96,7 @@ export default function Profile({ user, error }: IProfilePageProps) {
     try {
       setUploading(true);
       const { data, status } = await axios.post(
-        'https://book12-lemon.vercel.app/api/auth/update-profile',
+        'https://book12-lyart.vercel.app/api/auth/update-profile',
         { name, email, password, coverImg, fileDataURL },
         { headers: { 'Content-Type': 'application/json' } }
       );

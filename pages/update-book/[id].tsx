@@ -94,7 +94,7 @@ export default function AddBook({ categorys, book }: IUpdateBook) {
       try {
         setUploading(true);
         const { data, status }: IAxiosNewBook = await axios.get(
-          `https://book12-lemon.vercel.app/api/book/delete/${book.id}`
+          `https://book12-lyart.vercel.app/api/book/delete/${book.id}`
         );
         if (status === 200 && data?.status) {
           setUploading(false);
@@ -133,7 +133,7 @@ export default function AddBook({ categorys, book }: IUpdateBook) {
     try {
       setUploading(true);
       const { data, status }: IAxiosNewBook = await axios.post(
-        'https://book12-lemon.vercel.app/api/book/update',
+        'https://book12-lyart.vercel.app/api/book/update',
         {
           title,
           description,

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ShowBooks from '../components/show-books';
 import MainSearch from '../components/main-search';
 import { useRouter } from 'next/router';
@@ -39,9 +39,6 @@ export default function Home({ books }: { books: IBookWithRelationName[] }) {
   const onClickBook = (book: IBookWithRelationName) => {
     router.push(`/detail/${book.id}`);
   };
-  useEffect(() => {
-    alert('Rebuild test!');
-  });
   return (
     <div className="w-full h-full flex flex-col flex-grow ">
       <MainSearch onSearch={onSearch} />

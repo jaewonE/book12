@@ -64,7 +64,7 @@ export default function AddBook({ categorys }: IAddBook) {
     try {
       setUploading(true);
       const { data, status }: IAxiosNewBook = await axios.post(
-        'https://book12-lemon.vercel.app/api/book/new',
+        'https://book12-lyart.vercel.app/api/book/new',
         { title, description, category: selectedCategory, fileDataURL },
         { headers: { 'Content-Type': 'application/json' } }
       );
