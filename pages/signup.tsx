@@ -36,15 +36,15 @@ export default function SignUp() {
         return;
       }
       throw new Error('');
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        const { error } = err.response?.data;
-        if (error) {
-          alert(error);
-          return;
-        }
-      }
-      alert('Cannot create user');
+    } catch (err: any) {
+      // if (err && err instanceof AxiosError) {
+      //   const { error } = err.response?.data;
+      //   if (error) {
+      //     alert(String(error));
+      //     return;
+      //   }
+      // }
+      // alert('Cannot create user');
       console.error(err);
     }
   };
