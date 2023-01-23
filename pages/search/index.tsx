@@ -23,11 +23,6 @@ export const getServerSideProps: GetServerSideProps<ISearchPageProps> = async ({
     : +curQueryPage;
   if (Number.isNaN(curPage) || curPage <= 0) curPage = 1;
   try {
-    // const { data, status }: IAxiosSearchPageProps = await axios.get(
-    //   `http://localhost:3000/api/book/search?term=${query['term'] || ''}${
-    //     `&page=${query['page']}` || ''
-    //   }`
-    // );
     const books = await prisma.book.findMany({
       ...(term && { where: { title: { contains: term } } }),
       ...(!term && { orderBy: { id: 'desc' } }),

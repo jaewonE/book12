@@ -18,7 +18,7 @@ export default function SignUp() {
     e.preventDefault();
     try {
       const { data, status } = await axios.post(
-        'http://localhost:3000/api/auth/signup',
+        'https://book12-lemon.vercel.app/api/auth/signup',
         {
           name,
           email,
