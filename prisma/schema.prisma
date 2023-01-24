@@ -13,7 +13,7 @@ generator client {
 }
 datasource db {
   provider = "mysql"
-  url = env("DATABASE_URL")
+  url = "mysql://4h9sgagvdstofi4295s3:pscale_pw_adRuiUt8AY1exUgGOW95PRQztAuM0dkS3GHocGFyl9G@ap-northeast.connect.psdb.cloud/book12?sslaccept=strict"
   referentialIntegrity = "prisma"
 }
 
