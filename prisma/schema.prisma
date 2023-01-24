@@ -1,20 +1,11 @@
-// datasource db {
-//   provider = "postgresql"
-//   url      = env("DATABASE_URL")
-// }
-
-// generator client {
-//   provider = "prisma-client-js"
-// }
+datasource db {
+  provider = "mysql"
+  url = env("DATABASE_URL")
+  relationMode = "prisma"
+}
 
 generator client {
   provider = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
-}
-datasource db {
-  provider = "mysql"
-  url = "mysql://4h9sgagvdstofi4295s3:pscale_pw_adRuiUt8AY1exUgGOW95PRQztAuM0dkS3GHocGFyl9G@ap-northeast.connect.psdb.cloud/book12?sslaccept=strict"
-  referentialIntegrity = "prisma"
 }
 
 model Category {
@@ -37,7 +28,8 @@ model Book {
   category      Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   categoryId    Int
 
-  @@index([authorId, categoryId])
+  @@index([authorId])
+  @@index([categoryId])
 }
 
 model User {
