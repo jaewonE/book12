@@ -9,6 +9,10 @@ module.exports = {
     './lib/**/*.{js,jsx,ts,tsx}',
     './public/**/*.html',
   ],
+  enabled: process.env.NODE_ENV === 'production',
   plugins: [require('flowbite/plugin')],
-  theme: {},
+  options: {
+    safelist: [],
+  },
+  darkMode: `class`,
 };

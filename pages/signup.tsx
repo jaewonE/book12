@@ -18,17 +18,9 @@ export default function SignUp() {
     e.preventDefault();
     try {
       const { data, status } = await axios.post(
-        'https://book12-lyart.vercel.app/api/auth/signup',
-        {
-          name,
-          email,
-          password,
-        },
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
+        '/api/auth/signup',
+        { name, email, password },
+        { headers: { 'Content-Type': 'application/json' } }
       );
       if (status === 201 && data) {
         alert('Successfully created an account!\nPlease log in');

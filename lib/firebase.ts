@@ -55,6 +55,8 @@ export const deleteFileFB = async ({
 }: IDeleteFileFB): Promise<boolean> => {
   try {
     const fileDataURL = coverImg.split('?')[0];
+    if (!fileDataURL.includes('firebasestorage.googleapis.com')) return true;
+
     const {
       status,
       data: { name: path },
